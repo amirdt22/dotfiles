@@ -6,15 +6,39 @@ export ZSH="/Users/amir/.oh-my-zsh"
 # don't show username in prompt when it's me
 DEFAULT_USER=amir
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="powerlevel10k/powerlevel10k"
 # this is based on agnoster but requires additional fonts for special characters
 # install: SourceCodePro+Powerline+Awesome+Regular.ttf
 # iterm2: Preferences -> Profiles -> * -> Text
 # terminal: Preferences -> Profiles -> * -> Text
+ZSH_THEME="powerlevel10k/powerlevel10k"
+# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+
+POWERLEVEL9K_PROMPT_ON_NEWLINE=true
+POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
+
+POWERLEVEL9K_AWS_PROD_PROFILE=carbon
+
+zsh_aws_ind() {
+	local color='%F{green}'
+	local say=""
+	  if [[ -n $POWERLEVEL9K_AWS_PROD_PROFILE && $AWS_PROFILE == $POWERLEVEL9K_AWS_PROD_PROFILE ]]; then
+	   	color='%F{red}'
+			say='\u2757\u2757\u2757'
+	  fi
+	  echo -n "%{$color%}$say%{%f%}"
+}
+
+POWERLEVEL9K_CUSTOM_AWS_IND="zsh_aws_ind"
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(aws custom_aws_ind dir vcs)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator vi_mode background_jobs history time)
+POWERLEVEL9K_VI_INSERT_MODE_STRING=''
+POWERLEVEL9K_VI_COMMAND_MODE_STRING='CMD'
+
+# Set list of themes to pick from when loading at random
+# Setting this variable when ZSH_THEME=random will cause zsh to load
+# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
+# If set to an empty array, this variable will have no effect.
+# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -64,6 +88,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
 # zsh-nvm plugin with https://github.com/lukechilds/zsh-nvm/pull/55 applied
+# allows you to have both lazy and auto
 export NVM_LAZY_LOAD=true
 export NVM_AUTO_USE=true
 
@@ -77,6 +102,8 @@ plugins=(git docker aws npm web-search jhipster zsh-nvm)
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
+
+# export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
